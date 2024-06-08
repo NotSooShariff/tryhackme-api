@@ -36,7 +36,6 @@ project/
 - **Pydantic**: For data validation using Python type annotations.
 - **MongoDB**: For the database, with `pymongo` as the driver.
 - **SlowAPI**: For rate limiting.
-- **Python**: The programming language used.
 - **Requests**: For making HTTP requests in the test suite.
 
 ## 🛠️ Installation
@@ -44,8 +43,8 @@ project/
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/your-username/your-repo.git
-   cd your-repo
+   git clone https://github.com/NotSooShariff/tryhackme-api.git
+   cd tryhackme-api
    ```
 
 2. **Create a virtual environment** (optional but recommended):
