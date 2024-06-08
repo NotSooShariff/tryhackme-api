@@ -1,0 +1,112 @@
+version: "1.0.0"
+name: "TryHackMe Solutions API"
+port: 8000
+type: REST
+networkVisibility: Public
+context: "/api"
+schemaFilePath: "docs/swagger.yaml" 
+
+endpoints:
+  - path: /rooms
+    method: GET
+    description: Retrieve a list of all rooms.
+    request:
+      type: GET
+      parameters: []
+    response:
+      type: JSON
+      description: A list of all rooms.
+
+  - path: /room/{name}
+    method: GET
+    description: Retrieve details of a room by its name.
+    request:
+      type: GET
+      parameters:
+        - name: name
+          type: string
+          description: The name of the room.
+    response:
+      type: JSON
+      description: Details of the specified room.
+
+  - path: /room
+    method: POST
+    description: Create a new room.
+    request:
+      type: POST
+      parameters:
+        - name: body
+          type: JSON
+          description: The room details.
+    response:
+      type: JSON
+      description: Confirmation of room creation.
+
+  - path: /room/{name}
+    method: PUT
+    description: Update an existing room by name.
+    request:
+      type: PUT
+      parameters:
+        - name: name
+          type: string
+          description: The name of the room to update.
+        - name: body
+          type: JSON
+          description: The updated room details.
+    response:
+      type: JSON
+      description: Confirmation of room update.
+
+  - path: /room/{name}
+    method: DELETE
+    description: Delete a room by its name.
+    request:
+      type: DELETE
+      parameters:
+        - name: name
+          type: string
+          description: The name of the room to delete.
+    response:
+      type: JSON
+      description: Confirmation of room deletion.
+
+  - path: /search
+    method: GET
+    description: Search rooms by a keyword in name or description.
+    request:
+      type: GET
+      parameters:
+        - name: keyword
+          type: string
+          description: The search keyword.
+    response:
+      type: JSON
+      description: List of rooms matching the search keyword.
+
+  - path: /room_by_url
+    method: GET
+    description: Retrieve room details by URL.
+    request:
+      type: GET
+      parameters:
+        - name: room_url
+          type: string
+          description: The URL of the room.
+    response:
+      type: JSON
+      description: Details of the specified room.
+
+  - path: /submit
+    method: POST
+    description: Submit a solution for a room.
+    request:
+      type: POST
+      parameters:
+        - name: body
+          type: JSON
+          description: The submission details, including the room, username, socials, and approval status.
+    response:
+      type: JSON
+      description: Confirmation of the submission.

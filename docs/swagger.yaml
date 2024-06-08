@@ -1,0 +1,461 @@
+components:
+  schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    Question:
+      properties:
+        number:
+          title: Number
+          type: integer
+        question:
+          title: Question
+          type: string
+        solution:
+          title: Solution
+          type: string
+      required:
+      - number
+      - question
+      - solution
+      title: Question
+      type: object
+    Room:
+      properties:
+        description:
+          title: Description
+          type: string
+        name:
+          title: Name
+          type: string
+        room_url:
+          title: Room Url
+          type: string
+      required:
+      - name
+      - description
+      - room_url
+      title: Room
+      type: object
+    Submission:
+      properties:
+        approved:
+          default: false
+          title: Approved
+          type: boolean
+        description:
+          title: Description
+          type: string
+        name:
+          title: Name
+          type: string
+        room_url:
+          title: Room Url
+          type: string
+        submitted_by_user_socials:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          default: []
+          title: Submitted By User Socials
+        submitted_by_username:
+          title: Submitted By Username
+          type: string
+        tags:
+          items:
+            type: string
+          title: Tags
+          type: array
+        tasks:
+          items:
+            $ref: '#/components/schemas/Task'
+          title: Tasks
+          type: array
+        videos:
+          items:
+            $ref: '#/components/schemas/Video'
+          title: Videos
+          type: array
+        writeups:
+          items:
+            $ref: '#/components/schemas/Writeup'
+          title: Writeups
+          type: array
+      required:
+      - name
+      - description
+      - room_url
+      - tags
+      - tasks
+      - writeups
+      - videos
+      - submitted_by_username
+      title: Submission
+      type: object
+    SubmissionInDB:
+      example:
+        approved: false
+        description: A beginner-friendly room to learn basic pentesting skills.
+        name: Basic Pentesting
+        room_url: https://tryhackme.com/room/basicpentesting
+        submitted_by_user_socials:
+        - https://twitter.com/testuser
+        submitted_by_username: testuser
+        tags:
+        - beginner
+        - pentesting
+        tasks:
+        - description: Find the hidden flag.
+          questions:
+          - number: 1
+            question: Where is the flag located?
+            solution: In the hidden directory.
+          - number: 2
+            question: What is the flag?
+            solution: THM{hidden_flag}
+          title: Task 1
+        - description: Crack the password hash.
+          questions:
+          - number: 1
+            question: What is the password hash?
+            solution: 5f4dcc3b5aa765d61d8327deb882cf99
+          - number: 2
+            question: What is the cracked password?
+            solution: password
+          title: Task 2
+        videos:
+        - title: Basic Pentesting Video
+          url: https://example.com/video1
+        writeups:
+        - title: Basic Pentesting Writeup
+          url: https://example.com/writeup1
+      properties:
+        approved:
+          default: false
+          title: Approved
+          type: boolean
+        description:
+          title: Description
+          type: string
+        name:
+          title: Name
+          type: string
+        room_url:
+          title: Room Url
+          type: string
+        submitted_by_user_socials:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          default: []
+          title: Submitted By User Socials
+        submitted_by_username:
+          title: Submitted By Username
+          type: string
+        tags:
+          items:
+            type: string
+          title: Tags
+          type: array
+        tasks:
+          items:
+            $ref: '#/components/schemas/Task'
+          title: Tasks
+          type: array
+        videos:
+          items:
+            $ref: '#/components/schemas/Video'
+          title: Videos
+          type: array
+        writeups:
+          items:
+            $ref: '#/components/schemas/Writeup'
+          title: Writeups
+          type: array
+      required:
+      - name
+      - description
+      - room_url
+      - tags
+      - tasks
+      - writeups
+      - videos
+      - submitted_by_username
+      title: SubmissionInDB
+      type: object
+    Task:
+      properties:
+        description:
+          title: Description
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/Question'
+          title: Questions
+          type: array
+        title:
+          title: Title
+          type: string
+      required:
+      - title
+      - description
+      - questions
+      title: Task
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+      type: object
+    Video:
+      properties:
+        title:
+          title: Title
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - title
+      - url
+      title: Video
+      type: object
+    Writeup:
+      properties:
+        title:
+          title: Title
+          type: string
+        url:
+          title: Url
+          type: string
+      required:
+      - title
+      - url
+      title: Writeup
+      type: object
+  securitySchemes:
+    HTTPBasic:
+      scheme: basic
+      type: http
+info:
+  title: FastAPI
+  version: 0.1.0
+openapi: 3.1.0
+paths:
+  /room:
+    post:
+      operationId: create_room_room_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - HTTPBasic: []
+      summary: Create Room
+  /room/{name}:
+    delete:
+      operationId: delete_room_room__name__delete
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          title: Name
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - HTTPBasic: []
+      summary: Delete Room
+    get:
+      operationId: get_room_room__name__get
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          title: Name
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Room
+    put:
+      operationId: update_room_room__name__put
+      parameters:
+      - in: path
+        name: name
+        required: true
+        schema:
+          title: Name
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Room'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      security:
+      - HTTPBasic: []
+      summary: Update Room
+  /room_by_url:
+    get:
+      operationId: get_room_by_url_room_by_url_get
+      parameters:
+      - in: query
+        name: room_url
+        required: true
+        schema:
+          title: Room Url
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Room'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Get Room By Url
+  /rooms:
+    get:
+      operationId: get_rooms_rooms_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Room'
+                title: Response Get Rooms Rooms Get
+                type: array
+          description: Successful Response
+      summary: Get Rooms
+  /search:
+    get:
+      operationId: search_rooms_search_get
+      parameters:
+      - in: query
+        name: keyword
+        required: true
+        schema:
+          minLength: 1
+          title: Keyword
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Room'
+                title: Response Search Rooms Search Get
+                type: array
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Search Rooms
+  /submit:
+    post:
+      operationId: submit_solution_submit_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmissionInDB'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Submit Solution
