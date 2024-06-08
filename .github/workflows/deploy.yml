@@ -32,12 +32,18 @@ jobs:
     needs: build
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install SSH client
+      run: sudo apt-get install openssh-client -y
+
     - name: SSH to Droplet and deploy
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.DROPLET_IP }}
         username: ${{ secrets.DROPLET_USER }}
-        key: ${{ secrets.DROPLET_KEY }}
+        password: ${{ secrets.DROPLET_PASSWORD }}
         script: |
           docker pull ${{ secrets.DOCKER_USERNAME }}/tryhackme-api:latest
           docker stop tryhackme-api || true
