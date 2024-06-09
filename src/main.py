@@ -48,6 +48,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def log_request(request: Request):
+    ip = request.client.host
+    request_data = {
+        "path": request.url.path,
+        "method": request.method,
+        "client_ip": ip,
+        "timestamp": time.time()
+    }
+    db.request_logs.insert_one(request_data)
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    log_request(request)
+    response = await call_next(request)
+    return response
+
+
 def get_current_username(credentials: HTTPBasicCredentials = Depends(security), request: Request = None):
     correct_username = os.getenv("ADMIN_USERNAME")
     correct_password = os.getenv("ADMIN_PASSWORD")
