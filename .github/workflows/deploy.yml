@@ -26,7 +26,6 @@ jobs:
       run: |
         docker build -t ${{ secrets.DOCKER_USERNAME }}/tryhackme-api:latest .
         docker push ${{ secrets.DOCKER_USERNAME }}/tryhackme-api:latest
-
   deploy:
     runs-on: ubuntu-latest
     needs: build
@@ -48,4 +47,4 @@ jobs:
           docker pull ${{ secrets.DOCKER_USERNAME }}/tryhackme-api:latest
           docker stop tryhackme-api || true
           docker rm tryhackme-api || true
-          docker run -d --name tryhackme-api -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/tryhackme-api:latest
+          docker run -d --name tryhackme-api -p 8000:8000 --env-file /home/notsooshariff/tryhackme-api/.env ${{ secrets.DOCKER_USERNAME }}/tryhackme-api:latest
