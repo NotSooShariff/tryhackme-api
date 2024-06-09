@@ -86,6 +86,7 @@ project/
 
 ## 📜 API Endpoints
 
+Refer to the [documentation](https://tryhackme.api-cloud.one/docs) for a better understanding.
 - **GET /rooms**: List all rooms.
 - **GET /room/{name}**: Get details of a specific room.
 - **GET /search**: Search rooms by keyword.
