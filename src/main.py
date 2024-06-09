@@ -11,6 +11,7 @@ import os
 import time
 import uvicorn
 from fastapi.responses import JSONResponse
+from typing import Optional
 import logging
 from src.models import Submission, SubmissionInDB
 
@@ -74,6 +75,11 @@ class Room(BaseModel):
     name: str
     description: str
     room_url: str
+    tags: Optional[list[str]]
+    tasks: Optional[list[dict]]
+    writeups: Optional[list[dict]]
+    videos: Optional[list[dict]]
+
 
 @app.get("/rooms", response_model=list[Room])
 @limiter.limit("5/minute")
