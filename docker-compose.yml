@@ -1,9 +1,10 @@
-version: '3'
+version: '3.8'
+
 services:
-  app:
-    build: .
-    ports:
-      - "8080:8080"
+  tryhackme-api:
+    image: notsooshariff/tryhackme-api:latest
     env_file:
       - .env
+    ports:
+      - "8000:8000"
     restart: always
