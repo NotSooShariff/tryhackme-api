@@ -25,6 +25,3 @@ jobs:
         script: |
           cd /home/notsooshariff/tryhackme-api
           git pull
-          source venv/bin/activate
-          pkill -f "uvicorn src.main:app"
-          nohup uvicorn src.main:app --host 0.0.0.0 --port 8000 &
